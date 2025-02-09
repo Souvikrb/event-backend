@@ -4,7 +4,7 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    trim: true, // Removes leading and trailing whitespace
+    trim: true, 
     minlength: 2, // Minimum length for the name
     maxlength: 100 // Maximum length for the name
   },
@@ -35,19 +35,31 @@ const userSchema = new mongoose.Schema({
   },
   designation: {
     type: String,
-    trim: true, // Removes leading and trailing whitespace
+    trim: true, 
   },
   profileImage: {
     type: String,
-    trim: true, // Removes leading and trailing whitespace
+    trim: true, 
   },
   phone: {
     type: String,
-    trim: true, // Removes leading and trailing whitespace
+    trim: true, 
   },
   status: {
     type: String,
-    trim: true, // Removes leading and trailing whitespace
+    trim: true, 
+  }, 
+  inCharge: {
+    type: String,
+    trim: true, 
+  }, 
+  postalcode: {
+    type: String,
+    trim: true, 
+  }, 
+  price: {
+    type: String,
+    trim: true, 
   }
 }, {
   timestamps: true // Automatically adds createdAt and updatedAt fields
