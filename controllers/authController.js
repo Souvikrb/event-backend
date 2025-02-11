@@ -23,7 +23,7 @@ exports.register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create new user
-    const user = new Auth({ name, email, password: hashedPassword, role });
+    const user = new Auth({ name, email, password: hashedPassword, role,status:'active' });
     await user.save();
 
     res.status(201).json({ message: 'User registered successfully' });
@@ -43,13 +43,15 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: 'Both email and password are required.' });
     }
     let user;
-    let role = 'serviceprovider';
-    if (id === 'admin') {
-      user = await Auth.findOne({ email });
-      role = user.role;
-    }
-     else 
-      user = await Service.findOne({ email });
+    user = await Auth.findOne({ email });
+    role = user.role;
+    // let role = 'serviceprovider';
+    // if (id === 'admin') {
+    //   user = await Auth.findOne({ email });
+    //   role = user.role;
+    // }
+    //  else 
+    //   user = await Service.findOne({ email });
      
       
     if (!user) {

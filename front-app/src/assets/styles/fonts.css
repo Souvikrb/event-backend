@@ -1,0 +1,32 @@
+@font-face {
+    font-family: myFontLight;
+    src: url("../fonts/lemon-milk-font/LemonMilkLight.otf");
+}
+
+@font-face {
+    font-family: myFontMedium;
+    src: url("../fonts/lemon-milk-font/LemonMilkMedium.otf");
+}
+
+@font-face {
+    font-family: myFontBold;
+    src: url("../fonts/lemon-milk-font/LemonMilkBold.otf");
+}
+
+@font-face {
+    font-family: myFontRegular;
+    src: url("../fonts/lemon-milk-font/LemonMilkRegular-X3XE2.otf");
+}
+.font-my-light {
+    font-family: myFontLight !important;
+}
+
+.font-my-regular {
+    font-family: myFontRegular;
+}
+*{
+    font-family: "Poppins";
+}
+.scroll-none::-webkit-scrollbar {
+    display: none;
+  }

@@ -5,17 +5,16 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true, 
-    minlength: 2, // Minimum length for the name
-    maxlength: 100 // Maximum length for the name
+    minlength: 2,
+    maxlength: 100
   },
   email: {
     type: String,
     required: true,
-    unique: true, // Ensures no duplicate emails
+    unique: true,
     trim: true,
     validate: {
       validator: function (v) {
-        // Regular expression to validate email format
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
       },
       message: props => `${props.value} is not a valid email address!`
@@ -24,13 +23,13 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    minlength: 8, // Enforce a minimum length for security
-    maxlength: 128 // Optional: Set a maximum length for security best practices
+    minlength: 8,
+    maxlength: 128
   },
   role: { 
     type: String, 
     required: true, 
-    enum: ['admin', 'user', 'manager'], // Define roles
+    enum: ['admin', 'user', 'manager'], 
     default: 'user'
   },
   designation: {
@@ -38,31 +37,52 @@ const userSchema = new mongoose.Schema({
     trim: true, 
   },
   profileImage: {
-    type: String,
+    type: String, // URL to the image
     trim: true, 
   },
   phone: {
-    type: String,
+    type: String, // Store phone as a string to handle country codes
     trim: true, 
   },
   status: {
+    type: Boolean, // Status should be Boolean (active/inactive)
+    default: true
+  }, 
+  nameInCharge: {
     type: String,
     trim: true, 
   }, 
-  inCharge: {
-    type: String,
+  postalCode: {
+    type: String, // Postal codes can contain letters in some countries
     trim: true, 
   }, 
-  postalcode: {
+  country: {
     type: String,
     trim: true, 
-  }, 
+  },
   price: {
+    type: Number, // Price should be a number
+    min: 0
+  },
+  city: {
     type: String,
     trim: true, 
+  },
+  destination: {
+    type: String,
+    trim: true, 
+  },
+  definition: {
+    type: String,
+    trim: true, 
+  },
+  workingHours: {
+    type: Number, // Working hours should be a number
+    min: 0,
+    max: 24
   }
 }, {
-  timestamps: true // Automatically adds createdAt and updatedAt fields
+  timestamps: true
 });
 
 module.exports = mongoose.model('User', userSchema);

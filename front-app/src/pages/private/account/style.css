@@ -1,0 +1,16 @@
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: '';
+  }
+  select {
+    color: black;
+  }
+  
+  select:has(option[value=""]:checked) {
+    color: #A49797;
+  }
+  select option {
+    color: black;
+  }

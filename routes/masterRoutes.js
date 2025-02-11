@@ -24,7 +24,7 @@ const {
   } = require('../controllers/menuController');
 
 
-router.use(validateToken);
+//router.use(validateToken);
 // Dashboard route
 /**
  * @route   GET /

@@ -2,7 +2,7 @@ const User = require("../models/auth");
 const { upload } = require("../utils/fileUpload");
 const bcrypt = require("bcrypt");
 exports.getUsers = async (req, res) => {
-    const { id } = req.params;
+    const id = req.user.id;
     try {
         let users;
         if (id)
@@ -58,18 +58,27 @@ exports.updateUser = async (req, res) => {
             if(err)
                 return res.status(400).json({ message: err.message });
             const { id } = req.params;
-            const { name, email, phone, password, role, designation } = req.body;
-            if (!name || !email || !role)
-                return res.status(500).json({ message: "Please enter all required fields" });
+            const { name, email, phone, password, role, designation, status, nameInCharge, postalCode, country, price, city, destination, definition, workingHours } = req.body;
+            if (!name || !email )
+                return res.status(500).json({ message: "Please enter name & Email Id" });
 
-            
             const user = {
                 name:name,
-                email,
-                phone,
-                role,
-                designation
+                email
             }
+            if(phone) user.phone = phone;
+            if(password) user.password = await bcrypt.hash(password, 10);
+            if(role) user.role = role;
+            if(designation) user.designation = designation;
+            if(status) user.status = status;
+            if(nameInCharge) user.nameInCharge = nameInCharge;
+            if(postalCode) user.postalCode = postalCode;
+            if(country) user.country = country;
+            if(price) user.price = price;
+            if(city) user.city = city;
+            if(destination) user.destination = destination;
+            if(definition) user.definition = definition;
+            if(workingHours) user.workingHours = workingHours;
             if (req.file) {
                 user.profileImage = `/uploads/${req.file.filename}` // Save the file path
             }

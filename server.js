@@ -15,6 +15,7 @@ const adsRoute   = require("./routes/advertisementRoute");
 const userRoutes = require("./routes/userRoute");
 const notificationRoutes = require("./routes/notificationRoute");
 const pushNotification = require('./pushNotification/notification')
+const bookingRoute = require('./routes/bookingRoutes')
 // Connect to the database
 const connection = require('./config/connection');
 connection();

@@ -1,0 +1,20 @@
+.bar-left,.bar-right,.bar-inner{
+    box-shadow: none !important;
+    border: none !important;
+}
+.multi-range-slider .input-type-range:focus + .thumb::after{
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border:none !important;
+}
+.thumb{
+    background-color: #4FC2CA !important;
+    border: 2px solid white !important;
+}
+.thumb-left::before,.thumb-right::before{
+    border:2px solid white !important;
+    height: 25px !important;
+    width: 25px !important;
+    margin: -12px -10px !important;
+    background-color: #4FC2CA !important;
+}
