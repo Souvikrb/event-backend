@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
   role: { 
     type: String, 
     required: true, 
-    enum: ['admin', 'user', 'manager'], 
+    enum: ['admin', 'user', 'manager','serviceprovider'], 
     default: 'user'
   },
   designation: {
@@ -80,7 +80,31 @@ const userSchema = new mongoose.Schema({
     type: Number, // Working hours should be a number
     min: 0,
     max: 24
-  }
+  },
+  about: {
+    type: String,
+    trim: true,
+    maxlength: 500, // You can set a maximum length for the "about" field
+    default: "" // Default empty string if not provided
+  },
+  location: {
+      type: mongoose.Schema.Types.Mixed,
+      trim: true,
+      maxlength: 100, // Maximum length for country
+      default: "" // Default empty string if not provided
+  },
+  category: {
+      type: mongoose.Schema.Types.Mixed,
+      trim: true,
+      maxlength: 100, // Maximum length for country
+      default: "" // Default empty string if not provided
+  },
+  address: {
+      type: String,
+      trim: true,
+      maxlength: 255, // Maximum length for address
+      default: "" // Default empty string if not provided
+  },
 }, {
   timestamps: true
 });

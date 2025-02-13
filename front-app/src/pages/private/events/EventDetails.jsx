@@ -137,7 +137,7 @@ export const EventDetails = () => {
               </div>
               <p className="text-black text-sm"><strong>Date : </strong>
                 <span>
-                  {formdata.dateTime && formatDate(formdata.dateTime[0].date)}
+                  {formdata.dateTime && formdata.dateTime.length > 0 ? formatDate(formdata.dateTime[0].date): 'Not Updated'}
                 </span>
               </p>
             </div>

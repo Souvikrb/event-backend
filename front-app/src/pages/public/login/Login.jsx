@@ -71,7 +71,7 @@ export const Login = () => {
             />
           </svg>
         </Link>
-        <h1 className="text-xl font-my-regular text-black">Login to youdra.com</h1>
+        <h1 className="text-xl font-my-regular text-black">Login to adminCustom.com</h1>
         <div className="flex flex-col gap-1">
           <label className="text-black" htmlFor="email">
             Email

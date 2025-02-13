@@ -1,6 +1,6 @@
 const { upload } = require('../utils/fileUpload');
 const Event = require('../models/event');
-
+const User = require('../models/auth');
 exports.addEvent = async (req, res) => {
     try {
         upload.single('profileImage')(req, res, async (err) => {
@@ -54,6 +54,10 @@ exports.getEvent = async (req, res) => {
         let events;
         if (id)
             events = await Event.findOne({ _id: id });
+            if(events){
+                providerName = await User.findOne({_id:events.providerName});
+                events = {...events._doc,providerName:providerName.name};
+            }
         else
             events = await Event.find({});
 

@@ -30,7 +30,7 @@ export const Home = () => {
   const fetchCategory = async () => {
     const response = await getApiHandler(`${ApiPaths.master_list}/MASTER_CATEGORY`);
     if (response.status === 200) {
-      setCategorylist(response.data.data);
+      setCategorylist(response.data);
     }
   }
   const fetchEvent = async () => {

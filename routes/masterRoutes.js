@@ -13,7 +13,8 @@ const {
     masterAdd,
     masterDelete,
     masterSingledata,
-    userRole
+    userRole,
+    masterListWithPagination
 } = require("../controllers/masterController");
 
 const {
@@ -51,5 +52,6 @@ router.get('/list/:mid?/:id?',masterList);
 router.get('/listSingledata/:id?',masterSingledata);
 router.delete('/deletelist/:id', masterDelete);
 router.get('/role', userRole);
+router.get('/listwithpagination/:mid?',masterListWithPagination);
 
 module.exports = router;

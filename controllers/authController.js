@@ -6,13 +6,13 @@ const Service = require('../models/serviceProvider');
 // Register a new user
 exports.register = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role,status } = req.body;
 
     // Input validation
     if (!name || !email || !password) {
       return res.status(400).json({ message: 'All fields are required' });
     }
-
+    
     // Check if the email already exists
     const existingUser = await Auth.findOne({ email });
     if (existingUser) {
@@ -23,7 +23,7 @@ exports.register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create new user
-    const user = new Auth({ name, email, password: hashedPassword, role,status:'active' });
+    const user = new Auth({ name, email, password: hashedPassword, role,status });
     await user.save();
 
     res.status(201).json({ message: 'User registered successfully' });

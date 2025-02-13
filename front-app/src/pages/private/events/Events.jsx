@@ -75,7 +75,7 @@ export const Events = () => {
                                 <div className="w-8 -mr-2">
                                     <img src={ApproveImg} className="size-5" />
                                 </div>
-                                <p className="text-black text-sm"><strong>Date : </strong><span>{list.dateTime && formatDate(list.dateTime[0].date)}</span></p>
+                                <p className="text-black text-sm"><strong>Date : </strong><span>{list.dateTime && list.dateTime.length > 0 ? formatDate(list.dateTime[0].date): 'Not Updated'}</span></p>
                             </div>
                             <div className="flex gap-2 items-center">
                                 <p className="text-black inline-flex gap-2 text-sm"><strong>Time : </strong><img src={AlarmImg} className="size-5" /> <span>03:30 pm</span></p>

@@ -9,9 +9,11 @@ import InstagramImg from "../../assets/images/social/instagram.png"
 import SnapchatImg from "../../assets/images/social/snapchat.png"
 import TiktokImg from "../../assets/images/social/tiktok.png"
 import { Link } from "react-router-dom";
+import useAuth from "../../customHooks/useAuth";
 export const Navbar = ()=>{
     const [isMenu,setIsMenu] = useState(false)
-    const [isLoggedIn] = useState(false)
+    const [isLoggedIn,setIsLoggedIn] = useState(false);
+    const {logout} = useAuth();
     useEffect(()=>{
       if(isMenu){
         document.body.classList.add("overflow-hidden")
@@ -19,6 +21,12 @@ export const Navbar = ()=>{
         document.body.classList.remove("overflow-hidden")
       }
     },[isMenu])
+    useEffect(()=>{
+      const loginToken = sessionStorage.getItem("loginToken");
+      if(loginToken){
+        setIsLoggedIn(true)
+      }
+    },[])
     return(
       <Fragment>
         <div className="bg-white !text-black px-3 py-2 flex items-center justify-between fixed top-0 left-0 right-0 z-50">
@@ -68,21 +76,21 @@ export const Navbar = ()=>{
                {isLoggedIn?
                <div className="flex flex-row gap-3 items-center py-2.5">
                <img src={RightArrowImg} className="size-2" />
-               <span className="text-gray-600">Logout</span>
+               <span className="text-gray-600" onClick={logout}>Logout</span>
              </div>
                :
                <Fragment>
                <div className="flex flex-row gap-3 items-center py-2.5">
                  <img src={RightArrowImg} className="size-2" />
-                 <span className="text-gray-600">Login</span>
+                 <Link to="/login"><span className="text-gray-600">Login</span></Link>
                </div>
                <div className="flex flex-row gap-3 items-center py-2.5">
                  <img src={RightArrowImg} className="size-2" />
-                 <span className="text-gray-600">New Registration</span>
+                 <Link to="/register"><span className="text-gray-600">New Registration</span></Link>
                </div>
                <div className="flex flex-row gap-3 items-center py-2.5">
                  <img src={RightArrowImg} className="size-2" />
-                 <span className="text-gray-600">Advertise on Youdra</span>
+                 <span className="text-gray-600">Advertise on adminCustom</span>
                </div>
                </Fragment>
 }

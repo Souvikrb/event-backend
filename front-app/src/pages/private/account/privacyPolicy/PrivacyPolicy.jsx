@@ -47,7 +47,7 @@ const PrivacyPolicy = () => {
           Modifications to the Privacy and Information Confidentiality Policy: We reserve the right to amend the terms and conditions of the privacy and confidentiality policy if necessary and when appropriate. The amendments will be implemented here or on the main privacy policy page, and you will be continuously informed of the data we have obtained, how we will use it, and who we will provide it to.
         </Typography>
         <Typography variant="body2" color="text.secondary" className="mt-4" sx={{ marginTop: "20px" }}>
-          Contacting Us: You can contact us when needed by clicking on the Contact Us link available in the platform links or sending to our email address, Youdra on the above-mentioned domain
+          Contacting Us: You can contact us when needed by clicking on the Contact Us link available in the platform links or sending to our email address, adminCustom on the above-mentioned domain
         </Typography>
         <Typography variant="body2" color="text.secondary" className="mt-4" sx={{ marginTop: "20px" }}>
           Finally, your concerns and interest regarding the privacy and confidentiality of data are of utmost importance to us. We hope to achieve this through this policy.  </Typography>

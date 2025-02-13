@@ -77,6 +77,21 @@ exports.masterAdd = async (req, res) => {
 exports.masterList = async (req, res) => {
   try {
     const { mid, id } = req.params;
+
+    if (mid) {
+      var datalist = await Master.find({ master_code: mid, status: 1 });
+    } else {
+      var datalist = await Master.find({});
+    }
+
+    return res.status(200).json({ message: datalist });
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong", error: error.message });
+  }
+};
+exports.masterListWithPagination = async (req, res) => {
+  try {
+    const { mid, id } = req.params;
     const page = parseInt(req.query.page) || 1; // Default to page 1
     const limit = parseInt(req.query.limit) || 3; // Default to 10 items per page
     const startIndex = (page - 1) * limit;
@@ -129,7 +144,6 @@ exports.masterList = async (req, res) => {
     res.status(500).json({ message: "Something went wrong", error: error.message });
   }
 };
-
 // Delete Master data
 exports.masterDelete = async (req, res) => {
   try {

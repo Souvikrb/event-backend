@@ -24,7 +24,7 @@ export const ContactUs = ()=>{
                             <img src={EmailImg} />
                             <h2 className="text-[#4FC2CA] text-xl -ml-2">Email</h2>
                         </div>
-                        <p className="text-[#161616] text-sm font-semibold">youdra.info@gmail.com</p>
+                        <p className="text-[#161616] text-sm font-semibold">adminCustom.info@gmail.com</p>
                     </div>
                     <div className="bg-[#F0F0F0] p-3 -mx-3">
                         <div className="flex gap-2 items-center">

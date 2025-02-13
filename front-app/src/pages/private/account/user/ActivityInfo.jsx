@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import UserMenu from '../../../../components/userMenu/UserMenu';
 import { Button } from '@mui/material';
+import useApiHandlers from '../../../../api/ApiHandlers';
+import ApiPaths from '../../../../api/ApiPaths';
 
 const ActivityInfo = () => {
     const [formData, setFormData] = useState({
@@ -8,6 +10,7 @@ const ActivityInfo = () => {
         definition: '',
         workingHours: ''
     });
+    const { getApiHandler } = useApiHandlers();
     useEffect(() => {
         const fetchData = async () => {
             const response = await getApiHandler(`${ApiPaths.users}`);
@@ -51,8 +54,9 @@ const ActivityInfo = () => {
                     name="destination"
                     className="bg-white border border-[#B4B4B4] text-gray-500 rounded-full pl-4 pr-12 py-3 w-full"
                     placeholder="Destination"
-                    value={formData.destination || "Enter destination"}
+                    value={formData.destination}
                     onChange={handleChange}
+                    defaultValue=""
                 />
                 {errors.destination && <p className="text-red-500 text-sm">{errors.destination}</p>}
 
@@ -60,8 +64,9 @@ const ActivityInfo = () => {
                     name="definition"
                     className="bg-white border border-[#B4B4B4] text-gray-500 rounded-full pl-4 pr-12 py-3 w-full"
                     placeholder="Definition"
-                    value={formData.definition || "Enter definition"}
+                    value={formData.definition }
                     onChange={handleChange}
+                    defaultValue=""
                 />
                 {errors.definition && <p className="text-red-500 text-sm">{errors.definition}</p>}
 
@@ -71,6 +76,7 @@ const ActivityInfo = () => {
                     placeholder="Working Hours"
                     value={formData.workingHours || "Enter working hours"}
                     onChange={handleChange}
+                    defaultValue=""
                 />
                 {errors.workingHours && <p className="text-red-500 text-sm">{errors.workingHours}</p>}
 

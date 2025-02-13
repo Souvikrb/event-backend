@@ -24,7 +24,7 @@ export const Landing = () => {
           <div className="flex flex-col gap-4 p-4 bg-gradient-to-b from-[rgba(0,0,0,0)] to-[rgba(0,0,0,1)]">
             <h1 className="font-my-light text-3xl font-normal text-center text-white mb-8 uppercase">
               Welcome to <br />
-              <span className="font-semibold text-4xl font-my-regular">youdra</span>
+              <span className="font-semibold text-4xl font-my-regular">adminCustom</span>
             </h1>
             <Link
               to="/login"

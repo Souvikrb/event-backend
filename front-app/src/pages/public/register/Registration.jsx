@@ -17,7 +17,8 @@ export const Registration = () => {
     phone: "",
     privacyPolicy: false,
     newsletter: false,
-    role:"user"
+    role:"user",
+    status:"1",
   });
   const [errors, setErrors] = useState({});
   const [otpVerified, setOtpVerified] = useState(true); // Simulating OTP verification
@@ -61,9 +62,14 @@ export const Registration = () => {
       });
       return;
     }
-    setFormData({ ...formData, name: formData.fullName+" "+formData.lname });
+    const name = `${formData.fullName} ${formData.lname}`.trim();
+    const payload = {
+      ...formData,
+      name, // Use dynamically generated `name`
+    };
+    console.log(payload);
     try {
-      const response = await postApiHandler(ApiPaths.register, formData);
+      const response = await postApiHandler(ApiPaths.register, payload);
       if (response.status === 200 || response.status === 201) {
         navigate("/login");
         notify({
@@ -207,7 +213,7 @@ export const Registration = () => {
             />
             <label htmlFor="newsletter" className="text-sm">
               By checking this box, I agree to receive news-making emails from
-              YOUDRA.COM
+              adminCustom.COM
             </label>
           </div>
         </div>

@@ -1,6 +1,7 @@
 const multer = require('multer');
 const path = require('path');
 const ServiceProvider = require('../models/serviceProvider');
+const User = require('../models/auth');
 const bcrypt = require('bcrypt');
 // Add a new service provider
 // Set up multer storage configuration
@@ -37,10 +38,10 @@ exports.addServiceProvider = async (req, res) => {
             }
 
             // Extract data from the request body
-            const { fullName, phone, email,password, about, country, city, location, category, status } = req.body;
+            const { name, phone, email,password, about, country, city, location, category, status,role } = req.body;
 
             // Check if the required fields are provided
-            if (!fullName || !email || !phone) {
+            if (!name || !email || !phone) {
                 return res.status(400).json({ message: 'Full name, email, and phone are required' });
             }
 
@@ -61,8 +62,8 @@ exports.addServiceProvider = async (req, res) => {
             const profileImage = req.file ? `/uploads/${req.file.filename}` : ""; // Use local path for simplicity
 
             // Create a new service provider document
-            const newServiceProvider = new ServiceProvider({
-                fullName,
+            const newServiceProvider = new User({
+                name,
                 email,
                 phone,
                 password:hashedPassword,
@@ -71,7 +72,8 @@ exports.addServiceProvider = async (req, res) => {
                 city: city || "", // Optional field with default empty string if not provided
                 location: location || "",
                 category: category || "",
-                profileImage // Save the uploaded profile image path
+                profileImage, // Save the uploaded profile image path
+                role
             });
 
             // Save the service provider to the database
@@ -91,9 +93,9 @@ exports.getServiceProviders = async (req, res) => {
     try {
         let serviceProviders;
         if (id)
-            serviceProviders = await ServiceProvider.findOne({ _id: id });
+            serviceProviders = await User.findOne({ _id: id });
         else
-            serviceProviders = await ServiceProvider.find({});
+            serviceProviders = await User.find({role:'serviceprovider'});
 
         res.status(200).json({ message: serviceProviders });
     } catch (error) {
@@ -186,7 +188,7 @@ exports.approveServiceProvider = async (req, res) => {
                 status
             };
             // Find the service provider by ID and update it
-            const updatedServiceProvider = await ServiceProvider.findByIdAndUpdate(
+            const updatedServiceProvider = await User.findByIdAndUpdate(
                 id,
                 updateData,
                 { new: true } // Return the updated document

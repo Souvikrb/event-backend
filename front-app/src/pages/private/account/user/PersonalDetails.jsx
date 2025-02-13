@@ -13,6 +13,7 @@ import userNameImg from "../../../../assets/images/user/userName.png";
 import { useNavigate, useParams } from 'react-router-dom';
 import useApiHandlers from '../../../../api/ApiHandlers';
 import ApiPaths from '../../../../api/ApiPaths';
+import useResponse from '../../../../customHooks/useResponse';
 
 export default function PersonalDetails() {
   const [formData, setFormData] = useState({
@@ -27,6 +28,7 @@ export default function PersonalDetails() {
     city: "",
     name: ""
   });
+  const { notify } = useResponse()
   const { getApiHandler, postApiHandler, putApiHandler } = useApiHandlers();
   const [errors, setErrors] = useState({});
   useEffect(() => {
@@ -56,9 +58,9 @@ export default function PersonalDetails() {
     if (!validateForm()) return;
     try {
       const response = await putApiHandler(`${ApiPaths.users}/${formData._id}`, formData);
-      alert(response.data);
+      notify({ title: "Success!", text: response.data, icon: "success" });
     } catch (error) {
-      alert("Error submitting form");
+      notify({ title: "Error!", text: "Error submitting form", icon: "error" });
     }
   };
 

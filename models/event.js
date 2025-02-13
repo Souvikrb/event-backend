@@ -46,6 +46,7 @@ const eventSchema = new mongoose.Schema({
     providerName: {
         type: String,
         required: true,
+        ref: 'User'
     },
     dateTime: [
         {
