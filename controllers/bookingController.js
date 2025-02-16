@@ -2,6 +2,7 @@ const Booking = require("../models/booking");
 
 exports.addBooking = async (req, res) => {
     try {
+        return res.status(200).json({ message: "Booking Event is disable now" });
         const { eventId, dateId, timeslotId, promocode, guest } = req.body;
         // Validate required fields
         if ( !eventId || !dateId || !timeslotId) {

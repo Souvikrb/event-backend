@@ -54,9 +54,10 @@ exports.getEvent = async (req, res) => {
         let events;
         if (id)
             events = await Event.findOne({ _id: id });
+            //return res.status(200).json({ message: events });
             if(events){
                 providerName = await User.findOne({_id:events.providerName});
-                events = {...events._doc,providerName:providerName.name};
+                events = {...events._doc,providerNameShow:providerName.name};
             }
         else
             events = await Event.find({});
@@ -147,3 +148,65 @@ exports.deleteEvent = async (req, res) => {
             res.status(500).json({ message: 'Error deleting Event', error: error.message });
         }
     };
+
+exports.approveEvent = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { status  } = req.body;
+        // Prepare update object
+        const updateData = {
+            status
+        };
+        // Find the Event by ID and update it
+        const updateEvent = await Event.findByIdAndUpdate(
+            id,
+            updateData,
+            { new: true } // Return the updated document
+        );
+
+        if (!updateEvent) {
+            return res.status(404).json({ message: "Event not found" });
+        }
+
+        res.status(200).json({
+            message: "Change status successfully",
+            data: updateEvent,
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Error updating Event",
+            error: error.message,
+        });
+    }
+}
+
+exports.approvespecialist = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { status  } = req.body;
+        // Prepare update object
+        const updateData = {
+            isSpecialist:status
+        };
+        // Find the Event by ID and update it
+        const updateEvent = await Event.findByIdAndUpdate(
+            id,
+            updateData,
+            { new: true } // Return the updated document
+        );
+
+        if (!updateEvent) {
+            return res.status(404).json({ message: "Event not found" });
+        }
+
+        res.status(200).json({
+            message: "Change status successfully",
+            data: updateEvent,
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Error updating Event",
+            error: error.message,
+        });
+    }
+}

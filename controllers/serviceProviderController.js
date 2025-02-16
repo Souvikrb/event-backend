@@ -45,12 +45,12 @@ exports.addServiceProvider = async (req, res) => {
                 return res.status(400).json({ message: 'Full name, email, and phone are required' });
             }
 
-            const isEmail = await ServiceProvider.findOne({ email });
+            const isEmail = await User.findOne({ email });
 
             if (isEmail)
                 return res.status(400).json({ message: 'Email Id is already exist.' });
 
-            const isPhone = await ServiceProvider.findOne({ phone });
+            const isPhone = await User.findOne({ phone });
 
             if (isPhone)
                 return res.status(400).json({ message: 'Phone Number is already exist.' });
@@ -113,15 +113,15 @@ exports.updateServiceProvider = async (req, res) => {
 
         try {
             const { id } = req.params;
-            const { fullName, phone, email, about, country, city, location, category,status } = req.body;
+            const { name, phone, email, about, country, city, location, category,status } = req.body;
             // Check if the required fields are provided
-            if (!fullName || !email || !phone) {
+            if (!name || !email || !phone) {
                 return res.status(400).json({ message: 'Full name, email, and phone are required' });
             }
 
             // Prepare update object
             const updateData = {
-                fullName,
+                name,
                 phone,
                 email,
                 about,
@@ -137,7 +137,7 @@ exports.updateServiceProvider = async (req, res) => {
             }
             
             // Find the service provider by ID and update it
-            const updatedServiceProvider = await ServiceProvider.findByIdAndUpdate(
+            const updatedServiceProvider = await User.findByIdAndUpdate(
                 id,
                 updateData,
                 { new: true } // Return the updated document
@@ -166,7 +166,7 @@ exports.deleteServiceProvider = async (req, res) => {
         const { id } = req.params;
 
         // Find the service provider by ID and delete it
-        const deletedServiceProvider = await ServiceProvider.findByIdAndDelete(id);
+        const deletedServiceProvider = await User.findByIdAndDelete(id);
 
         if (!deletedServiceProvider) {
             return res.status(404).json({ message: 'Service provider not found' });

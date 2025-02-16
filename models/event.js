@@ -65,6 +65,11 @@ const eventSchema = new mongoose.Schema({
     },
     termsDetails:{
         type:String
+    },
+    isSpecialist: {
+        type: String,
+        enum: ['active', 'inactive'],
+        default: 'inactive',
     }
 });
 

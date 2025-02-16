@@ -37,6 +37,7 @@ app.use('/api', adsRoute); //Ads-related routes
 app.use('/api', userRoutes); //User-related routes
 app.use('/api',notificationRoutes);//Notification-related routes
 app.use('/',pushNotification);//Notification-related routes
+app.use('/api',bookingRoute);//Booking-related routes
 // Define the port from environment variable or fallback to 5000
 const PORT = process.env.PORT || 5000;
 
