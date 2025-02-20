@@ -6,7 +6,7 @@ const Service = require('../models/serviceProvider');
 // Register a new user
 exports.register = async (req, res) => {
   try {
-    const { name, email, password, role,status } = req.body;
+    const { name, email, password,phone, role,status } = req.body;
 
     // Input validation
     if (!name || !email || !password) {
@@ -23,7 +23,7 @@ exports.register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create new user
-    const user = new Auth({ name, email, password: hashedPassword, role,status });
+    const user = new Auth({ name, email, password: hashedPassword,phone, role,status });
     await user.save();
 
     res.status(201).json({ message: 'User registered successfully' });

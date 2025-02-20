@@ -1,6 +1,7 @@
 const { upload } = require('../utils/fileUpload');
 const Event = require('../models/event');
 const User = require('../models/auth');
+const mongoose = require("mongoose");
 exports.addEvent = async (req, res) => {
     try {
         upload.single('profileImage')(req, res, async (err) => {
@@ -52,16 +53,16 @@ exports.getEvent = async (req, res) => {
     const { id } = req.params;
     try {
         let events;
-        if (id)
+        if (id){
             events = await Event.findOne({ _id: id });
-            //return res.status(200).json({ message: events });
-            if(events){
+            if(events && mongoose.Types.ObjectId.isValid(events.providerName)){
                 providerName = await User.findOne({_id:events.providerName});
                 events = {...events._doc,providerNameShow:providerName.name};
             }
-        else
+        }
+        else{
             events = await Event.find({});
-
+        }
         res.status(200).json({ message: events });
     } catch (error) {
         console.error('Error fetching event:', error);

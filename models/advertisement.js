@@ -11,6 +11,18 @@ const ads = new mongoose.Schema({
     tdate:{
         type:String
     },
+    stime:{
+        type:String
+    },
+    etime:{
+        type:String
+    },
+    price:{
+        type:String
+    },
+    description:{
+        type:String
+    },
     adsImg:{
         type:String
     }

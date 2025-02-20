@@ -7,7 +7,7 @@ exports.AdvertisementAdd = async(req,res) => {
             if(err)
                 return res.status(400).json({ message: err.message });
 
-            const { adsname,fdate,tdate } = req.body;
+            const { adsname,fdate,tdate,sTime,eTime,price,description } = req.body;
             if(!adsname)
                 return res.status(400).json({message:"Advertisement Name is required"});
 
@@ -17,6 +17,10 @@ exports.AdvertisementAdd = async(req,res) => {
                 adsname,
                 fdate,
                 tdate,
+                sTime,
+                eTime,
+                price,
+                description,
                 adsImg
             })
             await adsData.save();

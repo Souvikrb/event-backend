@@ -2,11 +2,10 @@ const Booking = require("../models/booking");
 
 exports.addBooking = async (req, res) => {
     try {
-        return res.status(200).json({ message: "Booking Event is disable now" });
         const { eventId, dateId, timeslotId, promocode, guest } = req.body;
         // Validate required fields
-        if ( !eventId || !dateId || !timeslotId) {
-            return res.status(400).json({ message: " Event ID, Date ID, and Time Slots ID are required" });
+        if ( !eventId || !dateId || !timeslotId || guest == 0) {
+            return res.status(400).json({ message: "Please select Date , Timeslot & Guest" });
         }
         const customerId = req.user.id;
         // Create a new booking
@@ -21,7 +20,7 @@ exports.addBooking = async (req, res) => {
 
         await newBooking.save();
 
-        res.status(201).json({ message: "Booking added successfully", data: newBooking });
+        res.status(201).json({ message: "Your Event is booked successfully", data: newBooking });
     } catch (error) {
         res.status(400).json({ message: "Something went wrong", error });
     }

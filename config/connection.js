@@ -21,7 +21,7 @@ const mongoose = require("mongoose");
 
 const connection = async () => {
     try {
-        const connect = await mongoose.connect("mongodb://127.0.0.1:27017/productManagement");
+        const connect = await mongoose.connect("mongodb://127.0.0.1:27017/eventManagement");
         console.log("Connection Established");
     }
     catch(err){
