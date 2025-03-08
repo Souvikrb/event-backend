@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require("multer");
 const upload = multer();
 const { addEvent,getEvent,updateEvent,deleteEvent,approveEvent,approvespecialist } = require("../controllers/eventManager")
-
+const validateToken = require("../middleware/authMiddleware");
 router.post('/event', addEvent);
 
 // Route to get a list of all Event

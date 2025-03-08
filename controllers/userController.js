@@ -4,17 +4,17 @@ const bcrypt = require("bcrypt");
 exports.getUsers = async (req, res) => {
     const id = req.user.id;
     try {
-        let users;
-        if (id)
-            users = await User.findOne({ _id: id });
-        else
-            users = await User.find({});
+        let users = id ? await User.findOne({ _id: id }) : await User.find({});
+        
+        // Ensure users is always an array
+        users = id ? [users] : users;  
 
         res.status(200).json({ message: users });
     } catch (error) {
         return res.status(500).json({ message: "Something went wrong", error });
     }
-}
+};
+
 
 exports.addUser = async (req, res) => {
     try {

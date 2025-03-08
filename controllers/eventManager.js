@@ -8,7 +8,7 @@ exports.addEvent = async (req, res) => {
             if (err) {
                 return res.status(400).json({ message: err.message });
             }
-
+            const language = req.query.language || "en"; // Default language is English
             const { eventName, eventHighlight, dateTime, country, city, location, category, status,providerName,eventDescription,phone,termsTitle,termsDetails,price } = req.body;
 
             // Validate required fields
@@ -20,24 +20,25 @@ exports.addEvent = async (req, res) => {
 
             const profileImage = req.file ? `/uploads/${req.file.filename}` : '';
 
-            const newEvent = new Event({
-                eventName,
-                eventHighlight,
+            const newEventData = {
+                eventName: { [language]: eventName },
+                eventHighlight: { [language]: eventHighlight },
+                eventDescription: { [language]: eventDescription },
+                termsTitle: { [language]: termsTitle },
+                termsDetails: { [language]: termsDetails },
+                phone,
+                price,
+                providerName,
+                profileImage,
                 country,
                 city,
                 location,
-                profileImage,
                 category,
                 status: status || 'active',
-                eventDescription,
-                phone,
-                providerName,
-                termsTitle,
-                termsDetails,
-                price
+                dateTime: dateTime || []
+            };
 
-            });
-
+            const newEvent = new Event(newEventData);
             await newEvent.save();
 
             res.status(201).json({ message: 'Event added successfully', data: newEvent });
@@ -51,22 +52,72 @@ exports.addEvent = async (req, res) => {
 // Get a list of all event
 exports.getEvent = async (req, res) => {
     const { id } = req.params;
+    const language = req.query.language || "en"; // Default language is English
     try {
         let events;
-        if (id){
+
+        if (id) {
             events = await Event.findOne({ _id: id });
-            if(events && mongoose.Types.ObjectId.isValid(events.providerName)){
-                providerName = await User.findOne({_id:events.providerName});
-                events = {...events._doc,providerNameShow:providerName.name};
+
+            if (events) {
+                if (mongoose.Types.ObjectId.isValid(events.providerName)) {
+                    const providerName = await User.findOne({ _id: events.providerName });
+                    events = { ...events._doc, providerNameShow: providerName?.name };
+                }
+
+                // Return only the selected language fields
+                events = {
+                    ...events._doc,
+                    _id: events._id,
+                    eventName: events.eventName[language] || events.eventName["en"],
+                    eventHighlight: events.eventHighlight[language] || events.eventHighlight["en"],
+                    eventDescription: events.eventDescription[language] || events.eventDescription["en"],
+                    termsTitle: events.termsTitle[language] || events.termsTitle["en"],
+                    termsDetails: events.termsDetails[language] || events.termsDetails["en"],
+                    phone: events.phone,
+                    price: events.price,
+                    country: events.country,
+                    city: events.city, 
+                    location: events.location,
+                    category: events.category,
+                    providerName: events.providerName,
+                    providerNameShow: events.providerNameShow,
+                    isSpecialist: events.isSpecialist,
+                    status: events.status,
+                    dateTime: events.dateTime,
+                };
             }
+            res.status(200).json({ message: events });
+        } else {  
+            events = await Event.find({}).populate("providerName", "name");
+            
+            // Return only the selected language fields for all events
+            events = events.map(event => ({
+                _id: event._id,
+                eventName: event.eventName[language] || event.eventName["en"],
+                eventHighlight: event.eventHighlight[language] || event.eventHighlight["en"],
+                eventDescription: event.eventDescription[language] || event.eventDescription["en"],
+                termsTitle: event.termsTitle[language] || event.termsTitle["en"],
+                termsDetails: event.termsDetails[language] || event.termsDetails["en"],
+                phone: event.phone,
+                price: event.price,
+                country: event.country,
+                city: event.city, 
+                location: event.location,
+                category: event.category,
+                isSpecialist: event.isSpecialist,
+                status: event.status,
+                providerName: event.providerName ? event.providerName._id: null,
+                providerNameShow: event.providerName ? event.providerName.name[language]: null,
+                dateTime: events.dateTime
+            }));
+            res.status(200).json({ message: events });
         }
-        else{
-            events = await Event.find({});
-        }
-        res.status(200).json({ message: events });
+
+        
     } catch (error) {
-        console.error('Error fetching event:', error);
-        res.status(500).json({ message: 'Error fetching event', error: error.message });
+        console.error("Error fetching event:", error);
+        res.status(500).json({ message: "Error fetching event", error: error.message });
     }
 };
 
@@ -77,9 +128,10 @@ exports.updateEvent = async (req, res) => {
             return res.status(400).json({ message: "Error uploading file", error: err.message });
         }
         try {
+            const language = req.query.language || "en"; // Default language is English
             const { id } = req.params;
             
-            const { eventName, eventHighlight, dateTime, country, city, location, category, status,providerName,eventDescription,phone,termsTitle,termsDetails,price } = req.body;
+            const { eventName, eventHighlight, dateTime, country, city, location, category, status,providerName,eventDescription,phone,termsTitle,termsDetails,price} = req.body;
             // Validate required fields
             if (!eventName  || !phone) {
                 return res.status(400).json({ message: 'Event name, Phone are required.' });
@@ -87,8 +139,11 @@ exports.updateEvent = async (req, res) => {
            
             // Prepare update object
             const updateData = {
-                eventName,
-                eventHighlight,
+                [`eventName.${language}`]: eventName,
+                [`eventHighlight.${language}`]: eventHighlight,
+                [`eventDescription.${language}`]: eventDescription,
+                [`termsTitle.${language}`]: termsTitle,
+                [`termsDetails.${language}`]: termsDetails,
                 dateTime: dateTime || [],
                 country,
                 city,
@@ -96,10 +151,7 @@ exports.updateEvent = async (req, res) => {
                 category,
                 status: status || 'active',
                 providerName,
-                eventDescription,
                 phone,
-                termsTitle,
-                termsDetails,
                 price
 
             };

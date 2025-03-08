@@ -2,11 +2,8 @@ const mongoose = require('mongoose');
 
 const serviceProviderSchema = new mongoose.Schema({
     fullName: {
-        type: String,
-        required: true,
-        trim: true,
-        minlength: 3,
-        maxlength: 50
+        en: { type: String },
+        ar: { type: String }
     },
     email: {
         type: String,
@@ -39,10 +36,8 @@ const serviceProviderSchema = new mongoose.Schema({
         maxlength: 500
     },
     about: {
-        type: String,
-        trim: true,
-        maxlength: 500, // You can set a maximum length for the "about" field
-        default: "" // Default empty string if not provided
+        en: { type: String },
+        ar: { type: String }
     },
     country: {
         type: mongoose.Schema.Types.Mixed,

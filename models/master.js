@@ -14,7 +14,10 @@ const masterSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.Mixed,
         required: true
     },
-    DESC1: { type: mongoose.Schema.Types.Mixed }, // Can hold any type of data
+    DESC1: { 
+        en: { type: String },
+        ar: { type: String } 
+    }, // Holds multiple values for different languages
     DESC2: { type: mongoose.Schema.Types.Mixed },
     DESC3: { type: mongoose.Schema.Types.Mixed },
     DESC4: { type: mongoose.Schema.Types.Mixed },

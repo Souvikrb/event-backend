@@ -22,6 +22,7 @@ exports.masterAdd = async (req, res) => {
         return res.status(500).json({ message: err });
       const { parent_id = null, M_CODE, DESC1,DESC2,DESC3 } = req.body;
       const { id = null } = req.params;
+      const language = req.query.language || "en"; // Default language is English
       // Validation
       if (!DESC1) {
         return res.status(400).json({ message: "Please enter fields value." });
@@ -36,14 +37,15 @@ exports.masterAdd = async (req, res) => {
         }
 
         //Check if value already exists (same DESC1 and master_code for edit)
-        const duplicateValue = await Master.findOne({ master_code: M_CODE, DESC1, _id: { $ne: id } });
-        if (duplicateValue) {
-          return res.status(500).json({ message: "Value already exists" });
-        }
+        // const duplicateValue = await Master.findOne({ master_code: M_CODE, DESC1, _id: { $ne: id } });
+        // if (duplicateValue) {
+        //   return res.status(500).json({ message: "Value already exists" });
+        // }
 
         //Update the record
         existingValue.parent_id = parent_id;
         existingValue.master_code = M_CODE;
+        existingValue[`DESC1.${language}`]= DESC1,
         existingValue.DESC1 = DESC1;
         existingValue.DESC2 = (req.file)? fileurl: DESC2;
         existingValue.DESC3 = DESC3;
@@ -53,13 +55,13 @@ exports.masterAdd = async (req, res) => {
         return res.status(200).json({ message: "Data Updated Successfully" });
       } else {
         // Create functionality - Check if value already exists for new record
-        const existingValue = await Master.findOne({ master_code: M_CODE, DESC1 });
-        if (existingValue) {
-          return res.status(500).json({ message: "Value already exists" });
-        }
+        // const existingValue = await Master.findOne({ master_code: M_CODE, DESC1 });
+        // if (existingValue) {
+        //   return res.status(500).json({ message: "Value already exists" });
+        // }
 
         // Create and save the new master value
-        const newValue = new Master({ parent_id, master_code: M_CODE, DESC1, DESC2:fileurl,DESC3 });
+        const newValue = new Master({ parent_id, master_code: M_CODE, DESC1:{ [language]: DESC1 }, DESC2:fileurl,DESC3 });
         await newValue.save();
 
         return res.status(201).json({ message: "Data Created Successfully" });
@@ -77,14 +79,44 @@ exports.masterAdd = async (req, res) => {
 exports.masterList = async (req, res) => {
   try {
     const { mid, id } = req.params;
+    const language = req.query.language || "en";
+    let datalist = mid 
+                ? await Master.find({ master_code: mid, status: 1 })
+                : await Master.find({});
+    
+    if (!datalist) return res.status(404).json({ message: "No Data found" });
+    
+    const formatProvider = provider => ({
+        DESC1: provider.DESC1[language] ,
+    });
+    res.status(200).json({ message: id ? formatProvider(datalist) : datalist.map(formatProvider) });
+    // if (mid) {
+    //   var datalist = await Master.find({ master_code: mid, status: 1 });
+    //       datalist = {
+    //         ...events._doc,
+    //         _id: events._id,
+    //         eventName: events.eventName[language] || events.eventName["en"],
+    //         eventHighlight: events.eventHighlight[language] || events.eventHighlight["en"],
+    //         eventDescription: events.eventDescription[language] || events.eventDescription["en"],
+    //         termsTitle: events.termsTitle[language] || events.termsTitle["en"],
+    //         termsDetails: events.termsDetails[language] || events.termsDetails["en"],
+    //         phone: events.phone,
+    //         price: events.price,
+    //         country: events.country,
+    //         city: events.city, 
+    //         location: events.location,
+    //         category: events.category,
+    //         providerName: events.providerName,
+    //         providerNameShow: events.providerNameShow,
+    //         isSpecialist: events.isSpecialist,
+    //         status: events.status,
+    //         dateTime: events.dateTime,
+    //     };
+    // } else {
+    //   var datalist = await Master.find({});
+    // }
 
-    if (mid) {
-      var datalist = await Master.find({ master_code: mid, status: 1 });
-    } else {
-      var datalist = await Master.find({});
-    }
-
-    return res.status(200).json({ message: datalist });
+    //return res.status(200).json({ message: datalist });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong", error: error.message });
   }

@@ -39,7 +39,7 @@ exports.addServiceProvider = async (req, res) => {
 
             // Extract data from the request body
             const { name, phone, email,password, about, country, city, location, category, status,role } = req.body;
-
+            const language = req.query.language || "en"; // Default language is English
             // Check if the required fields are provided
             if (!name || !email || !phone) {
                 return res.status(400).json({ message: 'Full name, email, and phone are required' });
@@ -63,11 +63,11 @@ exports.addServiceProvider = async (req, res) => {
 
             // Create a new service provider document
             const newServiceProvider = new User({
-                name,
+                name:{ [language]: name },
                 email,
                 phone,
                 password:hashedPassword,
-                about: about || "", // Optional field with default empty string if not provided
+                about: { [language]: about || '' }, // Optional field with default empty string if not provided
                 country: country || "", // Optional field with default empty string if not provided
                 city: city || "", // Optional field with default empty string if not provided
                 location: location || "",
@@ -90,19 +90,28 @@ exports.addServiceProvider = async (req, res) => {
 // Get a list of all service providers
 exports.getServiceProviders = async (req, res) => {
     const { id } = req.params;
+    const language = req.query.language || "en";
+    
     try {
-        let serviceProviders;
-        if (id)
-            serviceProviders = await User.findOne({ _id: id });
-        else
-            serviceProviders = await User.find({role:'serviceprovider'});
+        let serviceProviders = id 
+            ? await User.findOne({ _id: id }) 
+            : await User.find({ role: 'serviceprovider' });
 
-        res.status(200).json({ message: serviceProviders });
+        if (!serviceProviders) return res.status(404).json({ message: "No service providers found" });
+
+        const formatProvider = provider => ({
+            ...provider._doc,
+            name: provider.name[language] ,
+            about: provider.about[language]
+        });
+        
+        res.status(200).json({ message: id ? formatProvider(serviceProviders) : serviceProviders.map(formatProvider) });
     } catch (error) {
-        console.error('Error fetching service providers:', error);
-        res.status(500).json({ message: 'Error fetching service providers', error: error.message });
+        console.error("Error fetching service providers:", error);
+        res.status(500).json({ message: "Error fetching service providers", error: error.message });
     }
 };
+
 
 // Update an existing service provider by ID
 exports.updateServiceProvider = async (req, res) => {
@@ -114,17 +123,17 @@ exports.updateServiceProvider = async (req, res) => {
         try {
             const { id } = req.params;
             const { name, phone, email, about, country, city, location, category,status } = req.body;
+            const language = req.query.language || "en"; // Default language is English
             // Check if the required fields are provided
             if (!name || !email || !phone) {
                 return res.status(400).json({ message: 'Full name, email, and phone are required' });
             }
-
             // Prepare update object
             const updateData = {
-                name,
+                [`name.${language}`]: name,
                 phone,
                 email,
-                about,
+                [`about.${language}`]: about,
                 country,
                 city,
                 location,

@@ -2,11 +2,8 @@ const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
   name: {
-    type: String,
-    required: true,
-    trim: true, 
-    minlength: 2,
-    maxlength: 100
+    en: { type: String },
+    ar: { type: String }
   },
   email: {
     type: String,
@@ -82,10 +79,8 @@ const userSchema = new mongoose.Schema({
     max: 24
   },
   about: {
-    type: String,
-    trim: true,
-    maxlength: 500, // You can set a maximum length for the "about" field
-    default: "" // Default empty string if not provided
+    en: { type: String },
+    ar: { type: String }
   },
   location: {
       type: mongoose.Schema.Types.Mixed,

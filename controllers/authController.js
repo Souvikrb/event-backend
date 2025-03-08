@@ -82,3 +82,14 @@ exports.login = async (req, res) => {
     res.status(500).json({ message: 'Error logging in', error: error.message });
   }
 };
+
+exports.validateUserToken = async (req , res) => {
+  res.status(200).json({message: 'Auth token has set.' });
+}
+
+exports.setLanguage = async (req , res) => {  
+    const { language } = req.body;
+    req.session.language = language; // Save in session
+    console.log(req.session.language);
+    res.status(200).json({ message: `Language set to ${language}` });
+}

@@ -1,0 +1,10 @@
+const { addRatingReview,getRatingReview,getRatingReviewByUser,getRatingReviewByEvent,updateRatingReview,deleteRatingReview} = require('../controllers/ratingReviewController');
+const express = require('express');
+const router = express.Router();
+router.post('/ratingReview',addRatingReview);
+router.get('/ratingReview/:id?',getRatingReview); 
+router.get('/getRatingReviewByUser/:user',getRatingReviewByUser);
+router.get('/getRatingReviewByEvent/:event',getRatingReviewByEvent);
+router.put('/ratingReview/:id',updateRatingReview);
+router.delete('/ratingReview/:id',deleteRatingReview);
+module.exports = router;

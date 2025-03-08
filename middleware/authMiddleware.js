@@ -19,14 +19,14 @@ const validateToken = async (req, res, next) => {
     } catch (error) {
       console.error("Token verification failed:", error);
       return res.status(401).json({
-        message: "User is not authorized",
+        message: "Please login to continue.",
         error: error.message || error
       });
     }
   } else {
     // If the token is missing
     return res.status(401).json({
-      message: "Authorization token is missing"
+      message: "Please login to continue."
     });
   }
 };
